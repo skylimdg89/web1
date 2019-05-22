@@ -47,43 +47,78 @@ $(document).click(function(){
         var podArray = []; // pod array
         var locArray = []; // rack location array
 
+        //
+        var parseSplit;
+        var parseArraybf = [];
+        var parseArrayj5 = [];
+        var jsonStrbf = '{"Breakfix":[{"pod":"", "location":"", "tt":""}]}';
+        var jsonStrj5 = '{"J5":[{"pod":"", "location":"", "tt":""}]}';
+        var obj = JSON.parse(jsonStrbf);
+        var obj_j5 = JSON.parse(jsonStrj5);
+        //
         for(var i = 0; i < ttName.length ; i++){
             if(ttDesc[i].innerText.match("([bB]reak)?([mM]edia)?(-)?[fF]ix")){
                 siteArray.push(ttDesc[i].innerText.match(/(icn|ICN)\d{2}/g)[0]);
                 podArray.push(ttDesc[i].innerText.match(/\b\d-\d/g)[0]);
                 locArray.push(ttDesc[i].innerText.match(/\b\d{5}\b/g)[0]);//
-
+                ttDesc[i].style.backgroundColor = "yellow";
                 //console.log("siteArray["+i+"]" + siteArray);
                 //console.log("podArray["+i+"]" + podArray);
                 //console.log("locArray["+i+"]" + locArray);
 
                 bfArray.push("[" + podArray[podArray.length -1] + "] " + locArray[locArray.length-1] + ttString + ticketNumber[i].getElementsByClassName("ng-binding")[0].innerText);
+
+                //testing 4/23
+                parseArraybf.push(podArray[podArray.length-1] + " "+ locArray[locArray.length-1] +" "+ ticketNumber[i].getElementsByClassName("ng-binding")[0].innerText);
+                //
+
                 ct++;
             }
             else if(ttDesc[i].innerText.match("(Johnny 5)")){
                 console.log("J5 = " + ttDesc[i].innerText);
+                ttDesc[i].style.backgroundColor = "lime";
                 j5Array.push(ttDesc[i].innerText + ttString + ticketNumber[i].getElementsByClassName("ng-binding")[0].innerText);
+                parseArrayj5.push(podArray[podArray.length-1] + " "+ locArray[locArray.length-1] +" "+ ticketNumber[i].getElementsByClassName("ng-binding")[0].innerText);//
                 jct++;
             }
         }
+        //testing 4/23
+        //console.log(parseArraybf);
+        //
 
         //console.log(locArray);
         //console.log(podArray);
         //console.log(bfArray);
         bfArray.sort(); // sorts breakfix array
         textAreaDiv.append("total " + ct + " Break Fix tickets\n");
-
+        parseArraybf.sort(); /////testing 4/23
+        obj['Breakfix'].pop();
+        parseArrayj5.sort();
+        obj_j5['J5'].pop();
+        ///testing 4/23
         for(var j = 0; j < bfArray.length; j++){
             textAreaDiv.append(bfArray[j] + "\n");
+
+            //testing 4/23
+            parseSplit = parseArraybf[j].split(" ");
+            obj['Breakfix'].push({"pod":parseSplit[0], "location":parseSplit[1], "tt":parseSplit[2]});
+            jsonStrbf = JSON.stringify(obj);
+            //
         }
 
+        console.log(jsonStrbf);////
         textAreaDiv.append("========================================\n");
         textAreaDiv.append("total " + jct + " J5 tickets\n");
 
         for(var k = 0; k < j5Array.length; k++){
             textAreaDiv.append(j5Array[k] + "\n");
+             //testing 4/23
+            parseSplit = parseArrayj5[k].split(" ");
+            obj_j5['J5'].push({"pod":parseSplit[0], "location":parseSplit[1], "tt":parseSplit[2]});
+            jsonStrj5 = JSON.stringify(obj_j5);
+            //
         }
-
+        console.log(jsonStrj5);
     });
 
 });
