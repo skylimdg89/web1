@@ -4,10 +4,11 @@
 // @version      0.1
 // @description  try to take over the world!
 // @author       dklim
-// @match        https://myday-website.icn.aws-border.com/dashboard
+// @match        *
 // @grant        none
 // ==/UserScript==
 
+// change @match to myday dashboard website to use
 
 $(document).click(function(){
 
@@ -38,7 +39,8 @@ $(document).click(function(){
 
         var ttName = document.getElementsByClassName("search-result-entry");
         var ttDesc = document.getElementsByClassName("ticket-description ng-binding");
-        var ttString = " - https://tt.amazon.com/";
+        //var ttString = " - https://tt.amazon.com/";
+        var ttString = " - https://tt/";
         var ct=0; //counts number of break-fix tickets
         var jct=0; // counts number of j5 tickets
         var bfArray = []; // break-fix array
